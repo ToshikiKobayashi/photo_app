@@ -1,17 +1,15 @@
 <h1>ログイン</h1>
-<% if @user.present? && @user.invalid? then %>
-  <div>
-    <ul style="color: red">
+<div>
+  <ul style="color: red">
+    <% if @user.present? && @user.invalid? then %>
       <% @user.errors.full_messages.each do |message| %>
         <li><%= message %></li>
       <% end %>
-    </ul>
-  </div>
-<% elsif  @errormsg.present? then %>
-  <ul style="color: red">
-    <li><%= @errormsg %></li>
+    <% elsif  @errormsg.present? then %>
+       <li><%= @errormsg %></li>
+    <% end %>
   </ul>
-<% end %>
+</div>
 <%= form_for(:session, url: login_path) do |f| %>
   <p><%= f.label "ユーザID" %>
   <%= f.text_field :userid %></p>
