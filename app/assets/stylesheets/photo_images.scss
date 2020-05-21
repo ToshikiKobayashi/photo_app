@@ -1,0 +1,25 @@
+// Place all the styles related to the photo_images controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+#grid {
+	width: 900px;
+}
+#grid ul {
+  li {
+	margin: 5px;
+	float: left;
+	list-style: none;
+  }
+}
+
+.image {
+  position: relative;
+  }
+
+.image p {
+  position: absolute;
+  color: black;
+  top: 0;
+  left: 0;
+}

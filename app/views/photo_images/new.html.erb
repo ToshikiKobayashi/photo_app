@@ -1,0 +1,26 @@
+<h1>写真アップロード</h1>
+<div>
+  <ul style="color: red">
+    <% if @image.present? && @image.errors.any? then %>
+      <% @image.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    <% end %>
+    <% if @errmng.present? then %>
+      <li><%= @errmng %></li>
+    <% end %>
+  </ul>
+</div>
+<%= form_for(:photo_image, url: photo_images_path) do |f| %>
+  <div class="form-group">
+    <p>
+      <%= f.label "タイトル" %>
+      <%= f.text_field :filename %>
+    </p>
+    <p>
+      <%= f.label "画像ファイル" %>
+      <%= f.file_field :image %>
+    </p>
+    <%= f.submit "アップロード" %>
+  </div>
+<% end %>
