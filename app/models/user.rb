@@ -1,4 +1,4 @@
 class User < ApplicationRecord
-  validates :userid, presence: true
-  validates :password, presence: true
+  validates :userid, presence: {message: "ユーザIDを入力してください"}
+  validates :password, presence: {message: "パスワードを入力してください"}
 end

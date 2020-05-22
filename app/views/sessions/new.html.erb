@@ -2,11 +2,12 @@
 <div>
   <ul style="color: red">
     <% if @user.present? && @user.invalid? then %>
-      <% @user.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
+      <% if @user.errors.messages[:userid].present? then %>
+        <li><%= @user.errors.messages[:userid][0] %></li>
       <% end %>
-    <% elsif  @errormsg.present? then %>
-       <li><%= @errormsg %></li>
+      <% if @user.errors.messages[:password].present? then %>
+        <li><%= @user.errors.messages[:password][0] %></li>
+      <% end %>
     <% end %>
   </ul>
 </div>

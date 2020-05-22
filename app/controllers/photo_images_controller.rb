@@ -1,35 +1,72 @@
 class PhotoImagesController < ApplicationController
   before_action :logged_in_user, only:[:index, :create, :new]
 
-  # Ê^ˆê——•\¦‰æ–Ê
+  # å†™çœŸä¸€è¦§è¡¨ç¤ºç”»é¢
   def index
    @image = PhotoImage.all
+   # OAuthèªè¨¼ç”¨ã®ãƒªãƒ³ã‚¯URLä½œæˆ
+   @uri = URI("https://arcane-ravine-29792.herokuapp.com/oauth/authorize")
+   @uri.query = {
+      response_type: 'code',
+      client_id: '2058029af1b023a3f157b40e065d97c1b32ac76ce99a15d7dfbb5fa16f96fbc0',
+      redirect_uri: 'http://localhost:3000/oauth/callback'
+   }.to_param
   end
 
-  # Ê^ƒAƒbƒvƒ[ƒhˆ—(DB‚¨‚æ‚Ñƒtƒ@ƒCƒ‹•Û‘¶)
+  # å†™çœŸã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰å‡¦ç†(DBãŠã‚ˆã³ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜)
   def create
     @image = PhotoImage.new
-    # Ê^‚Ì–¼‘O‚¾‚¯‚ğDB‚É•Û‘¶‚µ‚Ä‚¨‚­
-    @image.filename = params[:photo_image][:filename]
-    
+    # å†™çœŸã®ã‚¿ã‚¤ãƒˆãƒ«ã¨åå‰ã‚’DBã«ä¿å­˜ã—ã¦ãŠã
+    @image.title = params[:photo_image][:title]
     img = params[:photo_image][:image]
     unless img.present? then
-      @errmng = "Please enter the image file"
+      @errmng = "ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„"
+    else
+      @image.filename = img.original_filename
     end
-    
+
     if @image.valid? && @image.save then
-      # ƒf[ƒ^‚Íƒtƒ@ƒCƒ‹•Û‘¶
+      # ãƒ‡ãƒ¼ã‚¿ã¯ãƒ•ã‚¡ã‚¤ãƒ«ä¿å­˜
       data = params[:photo_image][:image].read
-      File.binwrite('app/assets/images/' + @image.filename, data)
+      File.binwrite('public/photo/' + @image.filename, data)
     
-      redirect_to photo_images_url
+      redirect_to root_path
     else
       render 'new'
     end
   end
 
-  # Ê^ƒAƒbƒvƒ[ƒh‰æ–Ê
+  # å†™çœŸã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ç”»é¢
   def new
     @image = PhotoImage.new
+  end
+  
+  # MyTwetterã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰
+  def upload
+    token = session[:token]
+    title = params[:photo_image][:title]
+    filename = params[:photo_image][:filename]
+  
+    uri = URI.parse("https://arcane-ravine-29792.herokuapp.com/api/tweets")
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = uri.scheme === "https"
+    
+    headers = {
+      "Content-Type" => "application/json",
+      "Authorization" => "Bearer " + token
+    }
+    params = {
+      text: title,
+      url: "http://localhost:3000/photo/" + filename
+    }
+byebug
+    response = http.post(uri.path, params.to_json, headers)
+    if response.code == "201" then
+      flash[:notice] = "MyTwetterã¸ã®é€ä¿¡ã«æˆåŠŸã—ã¾ã—ãŸã€‚"
+      redirect_to root_path
+    else
+      flash[:alert] = "MyTwetterã¸ã®é€ä¿¡ã«å¤±æ•—ã—ã¾ã—ãŸã€‚(" + response.code + ")"
+      redirect_to root_path
+    end
   end
 end

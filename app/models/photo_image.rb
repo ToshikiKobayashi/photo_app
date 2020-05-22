@@ -1,3 +1,3 @@
 class PhotoImage < ApplicationRecord
-  validates :filename, presence: true, length: { maximum: 30 }
+  validates :title, presence: {message: "タイトルを入力してください"}, length: { maximum: 30, message: "タイトルは30文字以内です"}
 end

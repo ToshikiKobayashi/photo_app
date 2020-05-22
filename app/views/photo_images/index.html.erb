@@ -1,16 +1,28 @@
+<%= render 'flash' %>
+
 <%= link_to "ログアウト", logout_path, method: :delete %>
 
 <h1>写真一覧</h1>
-
-<%= link_to "写真を画面にアップロード", new_photo_image_path %>
+<% unless get_token.present? then %>
+   <p><%= link_to "MyTweerAppと連携", @uri.to_s %></p>
+<% else %>
+   <%= $oauth_token %>
+   <p>MyTweerAppと連携中</p>
+<% end %>
+<p><%= link_to "写真を画面にアップロード", new_photo_image_path %></p>
 <div id="grid">
 <ul>
 <% @image.each do |image| %>
    <% if image.filename.present? then %>
      <li>
      <div id="image">
-     <p><%= image.filename %></p>
-     <%= image_tag('/assets/' + image.filename, :size => '150x150') %>
+     <p><%= image.title %></p>
+     <%= image_tag('/photo/' + image.filename, :size => '150x150') %>
+     <%= form_for(:photo_image, url: twitter_path) do |f| %>
+        <%= f.hidden_field :filename, value: image.filename %>
+        <%= f.hidden_field :title, value: image.title %>
+        <%= f.submit "ツイートする" %>
+     <% end %>
      </div>
      </li>
    <% end %>
