@@ -1,24 +1,22 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Ruby version: 2.6.6
+* Rails version: 6.0.3.1
+* 確認環境：
+     OS：Windows 8 (64bit)
+     ブラウザ：Google Chrome 81.0.4044.138
 
-Things you may want to cover:
+* 作成・利用するテーブル
+   * users
+   * photo_images
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+* 実行方法
+   １．テーブルを作成
+       $ rake db:migrate
+   ２．ログインするためのユーザ・パスワードをDBに追加
+       $ rails c
+       irb(main):001:0> User.create(userid: "user", password: "password")
+   ３．アプリ起動
+       $ rails s
+   ４．ブラウザでアクセス
+       アクセス先： http://localhost:3000/
