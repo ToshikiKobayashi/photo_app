@@ -1,5 +1,5 @@
 class PhotoImagesController < ApplicationController
-  before_action :logged_in_user, only:[:index, :create, :new]
+  before_action :logged_in_user, only:[:index, :create, :new, :upload]
 
   # 写真一覧表示画面
   def index
@@ -59,7 +59,6 @@ class PhotoImagesController < ApplicationController
       text: title,
       url: "http://localhost:3000/photo/" + filename
     }
-byebug
     response = http.post(uri.path, params.to_json, headers)
     if response.code == "201" then
       flash[:notice] = "MyTwetterへの送信に成功しました。"
