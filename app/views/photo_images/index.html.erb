@@ -12,7 +12,7 @@
 <p><%= link_to "写真を画面にアップロード", photo_image_new_path %></p>
 <div id="grid">
 <ul>
-<% @image.each do |image| %>
+<% @image.order(created_at: :desc).each do |image| %>
    <% if image.filename.present? then %>
      <li>
      <div id="image">
@@ -21,7 +21,9 @@
      <%= form_for(:photo_image, url: twitter_path) do |f| %>
         <%= f.hidden_field :filename, value: image.filename %>
         <%= f.hidden_field :title, value: image.title %>
-        <%= f.submit "ツイートする" %>
+        <% if get_token.present? then %>
+           <%= f.submit "ツイートする" %>
+        <% end %>
      <% end %>
      </div>
      </li>
