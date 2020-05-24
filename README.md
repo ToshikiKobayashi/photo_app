@@ -7,8 +7,9 @@
    * ブラウザ：Google Chrome 81.0.4044.138
 
 * 作成・利用するテーブル
-   * users
-   * photo_images
+   * users           : Webアカウントユーザ情報
+   * photo_images    : 画像ファイル情報
+   * oauth_certifier : OAuth認証情報
 
 * 実行方法
    * 事前準備
