@@ -4,7 +4,7 @@
 
 <h1>写真一覧</h1>
 <% unless get_token.present? then %>
-   <p><%= link_to "MyTweerAppと連携", @uri.to_s %></p>
+   <p><%= link_to "MyTweerAppと連携", oauth_path %></p>
 <% else %>
    <%= $oauth_token %>
    <p>MyTweerAppと連携中</p>

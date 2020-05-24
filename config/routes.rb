@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get 'oauth/callback'
+  get    '/oauth',             to: 'oauth_certifiers#index'
+  get    '/oauth/callback',    to: 'oauth_certifiers#callback'
 
   get    '/login',   to: 'sessions#new'
   post   '/login',   to: 'sessions#create'

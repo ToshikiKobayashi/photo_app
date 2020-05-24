@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  include OauthHelper
+  include OauthCertifiersHelper
   include SessionsHelper
 
   private
