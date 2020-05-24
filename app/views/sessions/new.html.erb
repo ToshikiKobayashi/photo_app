@@ -8,13 +8,15 @@
       <% if @user.errors.messages[:password].present? then %>
         <li><%= @user.errors.messages[:password][0] %></li>
       <% end %>
+    <% elsif @errormsg.present? then %>
+      <li><%= @errormsg %></li>
     <% end %>
   </ul>
 </div>
 <%= form_for(:session, url: login_path) do |f| %>
-  <p><%= f.label "ユーザID" %>
+  <p><%= f.label :userid,  "ユーザID" %>
   <%= f.text_field :userid %></p>
-  <p><%= f.label "パスワード" %>
+  <p><%= f.label :password, "パスワード" %>
   <%= f.text_field :password %></p>
   <p><%= f.submit "ログインする" %></p>
 <% end %>

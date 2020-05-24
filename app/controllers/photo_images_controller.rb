@@ -3,14 +3,14 @@ class PhotoImagesController < ApplicationController
 
   # 写真一覧表示画面
   def index
-   @image = PhotoImage.all
-   # OAuth認証用のリンクURL作成
-   @uri = URI("https://arcane-ravine-29792.herokuapp.com/oauth/authorize")
-   @uri.query = {
+    @image = PhotoImage.all
+    # OAuth認証用のリンクURL作成
+    @uri = URI("https://arcane-ravine-29792.herokuapp.com/oauth/authorize")
+    @uri.query = {
       response_type: 'code',
       client_id: '2058029af1b023a3f157b40e065d97c1b32ac76ce99a15d7dfbb5fa16f96fbc0',
       redirect_uri: 'http://localhost:3000/oauth/callback'
-   }.to_param
+    }.to_param
   end
 
   # 写真アップロード処理(DBおよびファイル保存)
@@ -30,8 +30,10 @@ class PhotoImagesController < ApplicationController
       data = params[:photo_image][:image].read
       File.binwrite('public/photo/' + @image.filename, data)
     
+      # ルートURLにリダイレクト(成功時)
       redirect_to root_path
     else
+      # 写真アップロード画面を表示(失敗時)
       render 'new'
     end
   end
@@ -43,10 +45,12 @@ class PhotoImagesController < ApplicationController
   
   # MyTwetterアップロード
   def upload
+    # 各種パラメータ取得(アクセストークン,タイトル,ファイル名)
     token = session[:token]
     title = params[:photo_image][:title]
     filename = params[:photo_image][:filename]
   
+    # MyTwetterへの送信
     uri = URI.parse("https://arcane-ravine-29792.herokuapp.com/api/tweets")
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme === "https"
@@ -60,12 +64,13 @@ class PhotoImagesController < ApplicationController
       url: "http://localhost:3000/photo/" + filename
     }
     response = http.post(uri.path, params.to_json, headers)
+    
+    # 送信成功/失敗をFlashに書き込み、ルートURLにリダイレクト
     if response.code == "201" then
       flash[:notice] = "MyTwetterへの送信に成功しました。"
-      redirect_to root_path
     else
       flash[:alert] = "MyTwetterへの送信に失敗しました。(" + response.code + ")"
-      redirect_to root_path
     end
+    redirect_to root_path
   end
 end

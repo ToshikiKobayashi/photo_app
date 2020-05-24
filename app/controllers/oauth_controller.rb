@@ -1,7 +1,12 @@
 class OauthController < ApplicationController
+
+  # OAuth認証後に実行されるコールバック
   def callback
+  
+    # 認証後に渡される認可コード取得
     code = params[:code]
     
+    # アクセストークン取得のためのメッセージ送信
     uri = URI.parse("https://arcane-ravine-29792.herokuapp.com/oauth/token")
     params = {
        code: code,
@@ -12,8 +17,11 @@ class OauthController < ApplicationController
     }
     response = Net::HTTP.post_form(uri, params)
     result = JSON.parse(response.body)
+    
+    # アクセストークン取得
     set_token(result["access_token"])
     
+    # ルートURLにリダイレクト
     redirect_to root_path
   end
 end
