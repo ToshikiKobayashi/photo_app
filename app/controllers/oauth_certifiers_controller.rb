@@ -3,7 +3,6 @@ class OauthCertifiersController < ApplicationController
   def index
     # OAuth認証情報取得
     authinfo = OauthCertifier.find_by(userid: current_user.userid)
-byebug
     # OAuth認証用のリンクURL作成
     uri = URI("https://arcane-ravine-29792.herokuapp.com/oauth/authorize")
     uri.query = {
