@@ -11,6 +11,9 @@
    * photo_images
 
 * 実行方法
+   0. 事前準備
+       * $ bundle install
+       * $ yarn install --check-files
    1. テーブルを作成
        * $ rake db:migrate
    2. ログインするためのユーザ・パスワードをDBに追加
